@@ -92,7 +92,7 @@ const Hero = () => {
               className='px-6 py-3 w-48'
             >
               <Link
-                href='https://drive.google.com/uc?export=download&id=1W_OirfdSNa-GU-0ZjEh2yroZgQnOsZSF'
+                href={process.env.NEXT_PUBLIC_RESUME_URL || '#'}
                 target='_blank'
                 rel='noopener noreferrer'
               >
