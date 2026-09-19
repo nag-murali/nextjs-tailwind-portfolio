@@ -19,6 +19,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import * as motion from 'motion/react-client';
+import { profile } from '@/data/profile';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +27,8 @@ const Header = () => {
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Projects', href: '#projects' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -68,7 +69,7 @@ const Header = () => {
             href='#home'
             className='text-xl font-bold text-foreground hover:text-primary transition-colors'
           >
-            Nagendra Pulla
+            {profile.shortName}
           </Link>
 
           {/* Desktop Navigation */}
@@ -115,7 +116,7 @@ const Header = () => {
                     className='text-xl font-bold text-foreground'
                     onClick={() => setIsOpen(false)}
                   >
-                    Nagendra Pulla
+                    {profile.shortName}
                   </Link>
                 </div>
 

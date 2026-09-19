@@ -2,55 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import * as motion from 'motion/react-client';
 import Image from 'next/image';
+import { profile } from '@/data/profile';
+import { skillCategories } from '@/data/skills';
 
 const About = () => {
-  const skillCategories = [
-    {
-      category: 'Frontend',
-      description: 'Client-side technologies for building user interfaces',
-      skills: [
-        'React',
-        'Next.js',
-        'TypeScript',
-        'JavaScript',
-        'HTML5',
-        'CSS3',
-        'Tailwind CSS',
-        'MUI',
-      ],
-      color: 'bg-blue-500',
-      borderColor: 'border-blue-200',
-      textColor: 'text-blue-700',
-      bgColor: 'bg-blue-50',
-    },
-    {
-      category: 'Backend',
-      description: 'Server-side technologies and database management',
-      skills: ['Node.js', 'Express.js', 'MongoDB'],
-      color: 'bg-green-500',
-      borderColor: 'border-green-200',
-      textColor: 'text-green-700',
-      bgColor: 'bg-green-50',
-    },
-    {
-      category: 'State Management & Tools',
-      description: 'State management solutions and development tools',
-      skills: [
-        'Jest',
-        'Figma',
-        'REST APIs',
-        'Redux',
-        'React Query',
-        'Zustand',
-        'Storybook',
-      ],
-      color: 'bg-purple-500',
-      borderColor: 'border-purple-200',
-      textColor: 'text-purple-700',
-      bgColor: 'bg-purple-50',
-    },
-  ];
-
   // Animation variants
   const sectionHeadingVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -92,8 +47,19 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.25,
-        delayChildren: 0.4,
+        staggerChildren: 0.12,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const skillListVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03,
+        delayChildren: 0.1,
       },
     },
   };
@@ -104,7 +70,7 @@ const About = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.3,
       },
     },
   };
@@ -124,8 +90,7 @@ const About = () => {
             About Me
           </h2>
           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-            Passionate full-stack developer with a love for creating exceptional
-            digital experiences
+            {profile.aboutSubtitle}
           </p>
         </motion.div>
 
@@ -147,8 +112,8 @@ const About = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <Image
-                      src='/profile-pic.jpg'
-                      alt='Nagendra Muralidhar Pulla'
+                      src={profile.photo.about}
+                      alt={profile.name}
                       width={160}
                       height={192}
                       className='w-full h-full object-cover'
@@ -158,20 +123,16 @@ const About = () => {
               </CardHeader>
               <CardContent className='pt-0'>
                 <div className='space-y-4 text-muted-foreground'>
-                  <p className='text-base leading-relaxed'>
-                    Full Stack Developer with 3+ years of experience building
-                    scalable, high-performance, and user- friendly web
-                    applications. Known for perceptiveness and problem-solving
-                    skills, with a passion for writing clean code, delivering
-                    optimized solutions, and collaborating effectively in Agile
-                    teams.
-                  </p>
-                  <p>
-                    I specialize in modern web technologies like React, Next.js,
-                    and Node.js, but I&apos;m always excited to learn new tools
-                    and frameworks. I believe in writing clean, maintainable
-                    code and creating intuitive user experiences.
-                  </p>
+                  {profile.bio.map((paragraph, index) => (
+                    <p
+                      key={index}
+                      className={
+                        index === 0 ? 'text-base leading-relaxed' : undefined
+                      }
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -200,35 +161,30 @@ const About = () => {
                   whileInView='visible'
                   viewport={{ once: true }}
                 >
-                  {skillCategories.map((category, index) => (
+                  {skillCategories.map(category => (
                     <motion.div
-                      key={index}
-                      className={`p-3 rounded-lg border-2 ${category.borderColor} ${category.bgColor}`}
+                      key={category.category}
+                      className='p-3 rounded-lg border bg-muted/40'
                       variants={skillCategoryVariants}
                     >
-                      <div className='flex items-center gap-2 mb-2'>
+                      <div className='flex items-center gap-2 mb-1'>
                         <div
-                          className={`w-2 h-2 rounded-full ${category.color}`}
+                          className={`w-2 h-2 rounded-full shrink-0 ${category.accent}`}
                         ></div>
-                        <h4
-                          className={`font-semibold text-sm ${category.textColor}`}
-                        >
+                        <h4 className='font-semibold text-sm text-foreground'>
                           {category.category}
                         </h4>
                       </div>
+                      <p className='text-xs text-muted-foreground mb-2'>
+                        {category.description}
+                      </p>
                       <motion.div
                         className='flex flex-wrap gap-1'
-                        variants={staggerContainerVariants}
+                        variants={skillListVariants}
                       >
-                        {category.skills.map((skill, skillIndex) => (
-                          <motion.div
-                            key={skillIndex}
-                            variants={skillBadgeVariants}
-                          >
-                            <Badge
-                              variant='secondary'
-                              className={`text-xs ${category.textColor} bg-white/50 hover:bg-white/80 transition-colors`}
-                            >
+                        {category.skills.map(skill => (
+                          <motion.div key={skill} variants={skillBadgeVariants}>
+                            <Badge variant='secondary' className='text-xs'>
                               {skill}
                             </Badge>
                           </motion.div>

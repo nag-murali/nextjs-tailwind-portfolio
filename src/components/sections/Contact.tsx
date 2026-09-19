@@ -12,6 +12,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import * as motion from 'motion/react-client';
+import { contact } from '@/data/social';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,25 +24,24 @@ const Contact = () => {
   });
 
   const socialLinks = [
-    {
-      name: 'GitHub',
-      href: 'https://github.com/nag-murali',
-      icon: FaGithub,
-    },
+    { name: 'GitHub', href: contact.github, icon: FaGithub, external: true },
     {
       name: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/nagendra-muralidhar-pulla-0a836a21b',
+      href: contact.linkedin,
       icon: FaLinkedin,
+      external: true,
     },
     {
       name: 'Call',
-      href: 'tel:+919666756386',
+      href: `tel:${contact.phone.replace(/\s/g, '')}`,
       icon: PhoneCall,
+      external: false,
     },
     {
       name: 'Email',
-      href: 'mailto:nagmurali96@gmail.com',
+      href: `mailto:${contact.email}`,
       icon: HiMail,
+      external: false,
     },
   ];
 
@@ -124,6 +124,7 @@ const Contact = () => {
         email: '',
         message: '',
       });
+      toast.success("Message sent — I'll get back to you within 24 hours.");
     } catch (error: unknown) {
       console.error('Form submission error:', error);
 
@@ -181,8 +182,8 @@ const Contact = () => {
                   >
                     <Link
                       href={social.href}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target={social.external ? '_blank' : undefined}
+                      rel={social.external ? 'noopener noreferrer' : undefined}
                       aria-label={social.name}
                     >
                       <IconComponent className='h-5 w-5' />

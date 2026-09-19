@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Nagendra Muralidhar Pulla
 
-## Getting Started
+Personal portfolio site for a Frontend Engineer. Single-page scroll (Hero → About →
+Experience → Projects → Contact) with a working contact form.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS v4** — CSS-first config, no `tailwind.config.ts`; tokens live in
+  `src/app/globals.css`
+- **shadcn/ui** on Radix primitives · **Motion** for animation · **next-themes** for dark mode
+- **pnpm**, ESLint 9 (flat config), Prettier, Husky + lint-staged
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local   # then fill in the values below
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable                 | Required             | Purpose                                                                                                           |
+| ------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_RESUME_URL` | No                   | Target of the hero Resume button. Falls back to `public/resume.pdf`.                                              |
+| `FORMCARRY_ENDPOINT`     | For the contact form | [Formcarry](https://formcarry.com) endpoint that `POST /api/contact` forwards to. The route returns 500 if unset. |
 
-## Learn More
+## Content
 
-To learn more about Next.js, take a look at the following resources:
+All site content is data, not markup — edit `src/data/` rather than the components:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| File                     | Holds                                 |
+| ------------------------ | ------------------------------------- |
+| `src/data/profile.ts`    | Name, title, tagline, bio, resume URL |
+| `src/data/experience.ts` | Role and the project case studies     |
+| `src/data/projects.ts`   | Featured work and earlier projects    |
+| `src/data/skills.ts`     | Skill groups                          |
+| `src/data/education.ts`  | Education                             |
+| `src/data/social.ts`     | Email, phone, GitHub, LinkedIn        |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tenure is computed from `startDate` via `formatTenure()` in `src/lib/utils.ts`, so it never
+needs updating by hand.
 
-## Deploy on Vercel
+The canonical source for this content is the LaTeX résumé in the sibling `latex-resume`
+repo — keep the two in sync.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm dev            # dev server
+pnpm build          # production build
+pnpm lint           # eslint
+pnpm format         # prettier --write
+pnpm format:check   # prettier --check
+```
+
+## Deployment
+
+Deployed on Vercel via git integration — zero config, no `vercel.json`. Set both
+environment variables in the Vercel project settings.
