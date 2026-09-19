@@ -1,0 +1,5 @@
+# Native dependencies allowed to run install scripts.
+# sharp powers next/image optimization; unrs-resolver backs eslint import resolution.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { profile } from '@/data/profile';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,7 +11,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className='flex flex-col sm:flex-row justify-between items-center gap-4'>
           <div className='text-sm text-muted-foreground'>
-            © {currentYear} Nagendra Muralidhar Pulla. All rights reserved.
+            © {currentYear} {profile.name}. All rights reserved.
           </div>
 
           <div className='flex items-center gap-2 text-sm text-muted-foreground'>

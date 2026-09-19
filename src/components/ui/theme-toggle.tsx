@@ -2,23 +2,28 @@
 
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { cn } from '@/lib/utils';
 import * as motion from 'motion/react-client';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
-  // Avoid hydration mismatch by only rendering after mount
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Avoid a hydration mismatch: the server has no way to know the resolved
+  // theme, so render nothing until hydration. useSyncExternalStore gives us
+  // that without calling setState from an effect.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   if (!mounted) return null;
 
-  const isDark = theme === 'dark';
+  // resolvedTheme, not theme — theme is 'system' under the default config,
+  // which would leave the switch unchecked while the UI is actually dark.
+  const isDark = resolvedTheme === 'dark';
 
   // Animation variants
   const buttonVariants = {

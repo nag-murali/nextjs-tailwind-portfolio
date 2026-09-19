@@ -1,70 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Github, Eye } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import * as motion from 'motion/react-client';
+import { featuredWork, earlierProjects } from '@/data/projects';
+import { contact } from '@/data/social';
 
 const Projects = () => {
-  const projects = [
-    {
-      id: 1,
-      title: 'ZaraHome Clone',
-      description:
-        'Clone of ZaraHome website for home textiles and decor. Features shopping and cart functionality with both backend and frontend implementation.',
-      image: '/projects/zara_home.png',
-      technologies: [
-        'MongoDB',
-        'Express.js',
-        'Node.js',
-        'JavaScript',
-        'CSS',
-        'HTML',
-      ],
-      liveUrl: 'https://github.com/nag-murali/ZaraHome-Backened',
-      githubUrl: 'https://github.com/nag-murali/ZaraHome-Backened',
-      featured: true,
-    },
-
-    {
-      id: 2,
-      title: 'Quora Clone',
-      description:
-        'Platform to ask questions and get answers from experienced people. Built with React and Material UI for modern user experience.',
-      image: '/projects/quora.jpg',
-      technologies: ['React', 'CSS', 'MongoDB', 'Express', 'Material UI'],
-      liveUrl: 'https://github.com/nag-murali/quora-clone',
-      githubUrl: 'https://github.com/nag-murali/quora-clone',
-      featured: true,
-    },
-    {
-      id: 3,
-      title: 'Weather App',
-      description:
-        'Get current and weekly weather forecasts and maps for any city. Features real-time weather data with interactive interface.',
-      image: '/projects/weather_app.png',
-      technologies: ['HTML', 'JavaScript', 'CSS', 'Weather API'],
-      liveUrl: 'https://weather123app.netlify.app/',
-      githubUrl: 'https://github.com/nag-murali/weather_app',
-      featured: false,
-    },
-    {
-      id: 4,
-      title: 'Clone Croma',
-      description:
-        'Clone of Croma online store for digital gadgets and home electronics with responsive design and modern UI.',
-      image: '/projects/croma.png',
-      technologies: ['HTML', 'JavaScript', 'CSS'],
-      liveUrl: 'https://clone-croma.netlify.app/',
-      githubUrl: 'https://github.com/nag-murali/Clone-Croma',
-      featured: false,
-    },
-  ];
-
-  const featuredProjects = projects.filter(project => project.featured);
-  const otherProjects = projects.filter(project => !project.featured);
-
   // Animation variants for cards
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -72,23 +16,8 @@ const Projects = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.0,
+        duration: 0.8,
         ease: 'easeOut',
-      },
-    },
-  } as const;
-
-  // Animation variants for project images
-  const imageVariants = {
-    hover: {
-      rotateX: -8,
-      rotateY: 8,
-      scale: 1.05,
-      z: 30,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 20,
       },
     },
   } as const;
@@ -120,121 +49,95 @@ const Projects = () => {
         {/* Section Header */}
         <div className='text-center mb-16'>
           <h2 className='text-3xl md:text-4xl font-bold text-foreground mb-4'>
-            Featured Projects
+            Selected Work
           </h2>
           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-            A showcase of my recent work and side projects. Each project
-            demonstrates different skills and technologies I&apos;ve mastered.
+            Production platforms I&apos;ve built at Gale Partners, spanning
+            marketing automation, digital advertising, and design tooling.
           </p>
         </div>
 
-        {/* Featured Projects */}
-        <div
-          className='space-y-12 mb-16'
-          style={{ perspective: '1200px', perspectiveOrigin: 'center center' }}
-        >
-          {featuredProjects.map((project, index) => (
+        {/* Featured Case Studies */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20 max-w-5xl mx-auto'>
+          {featuredWork.map(study => (
             <motion.div
-              key={project.id}
+              key={study.id}
               initial='hidden'
               whileInView='visible'
               viewport={{ once: true, amount: 0.2 }}
               variants={cardVariants}
-              animate={{
-                rotateX: [0, -4, 0],
-                rotateY: [0, 4, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                repeatType: 'reverse',
-                ease: 'easeInOut',
-              }}
             >
-              <Card className='overflow-hidden hover:shadow-lg transition-shadow'>
-                <div
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-0 ${index % 2 === 1 ? 'lg:grid-cols-2' : ''}`}
-                >
-                  {/* Project Image */}
-                  <motion.div
-                    className={`relative h-64 lg:h-auto ${index % 2 === 1 ? 'lg:order-2' : ''}`}
-                    whileHover='hover'
-                    variants={imageVariants}
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className='object-cover'
-                      sizes='(max-width: 768px) 100vw, 50vw'
-                    />
-                    <div className='absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors' />
-                  </motion.div>
+              <Card className='h-full hover:shadow-lg transition-shadow'>
+                <CardHeader className='pb-3'>
+                  <CardTitle className='text-xl'>{study.name}</CardTitle>
+                  <p className='text-sm text-muted-foreground'>
+                    {study.subtitle}
+                  </p>
+                </CardHeader>
 
-                  {/* Project Content */}
-                  <div
-                    className={`p-6 lg:p-8 ${index % 2 === 1 ? 'lg:order-1' : ''}`}
-                  >
-                    <CardHeader className='p-0 mb-4'>
-                      <CardTitle className='text-2xl mb-2'>
-                        {project.title}
-                      </CardTitle>
-                    </CardHeader>
+                <CardContent className='space-y-4'>
+                  {/* Outcome — the headline result, in place of a screenshot */}
+                  <p className='text-sm font-medium text-primary border-l-2 border-primary/40 pl-3'>
+                    {study.outcome}
+                  </p>
 
-                    <CardContent className='p-0 space-y-4'>
-                      <p className='text-muted-foreground leading-relaxed'>
-                        {project.description}
-                      </p>
+                  <ul className='space-y-1.5'>
+                    {study.highlights.map((highlight, idx) => (
+                      <li
+                        key={idx}
+                        className='flex items-start gap-2 text-sm text-muted-foreground'
+                      >
+                        <span className='text-primary mt-1 text-xs'>•</span>
+                        <span className='leading-relaxed'>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                      {/* Technologies */}
-                      <div className='flex flex-wrap gap-2'>
-                        {project.technologies.map(tech => (
-                          <Badge key={tech} variant='secondary'>
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className='flex gap-4 pt-4'>
-                        <Button asChild>
-                          <Link
-                            href={project.liveUrl}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                          >
-                            <Eye className='h-4 w-4 mr-2' />
-                            Live Demo
-                          </Link>
-                        </Button>
-                        <Button variant='outline' asChild>
-                          <Link
-                            href={project.githubUrl}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                          >
-                            <Github className='h-4 w-4 mr-2' />
-                            Source Code
-                          </Link>
-                        </Button>
-                      </div>
-                    </CardContent>
+                  <div className='flex flex-wrap gap-1'>
+                    {study.technologies.map(tech => (
+                      <Badge
+                        key={tech}
+                        variant='secondary'
+                        className='text-xs px-2 py-0'
+                      >
+                        {tech}
+                      </Badge>
+                    ))}
                   </div>
-                </div>
+
+                  {/* Only rendered where a public artifact actually exists */}
+                  {study.url && (
+                    <Button variant='outline' size='sm' asChild>
+                      <Link
+                        href={study.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <ExternalLink className='h-3 w-3 mr-1' />
+                        {study.urlLabel ?? 'View'}
+                      </Link>
+                    </Button>
+                  )}
+                </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
 
-        {/* Other Projects Grid */}
+        {/* Earlier Projects Grid */}
         <div className='space-y-8'>
-          <h3 className='text-2xl font-bold text-foreground text-center'>
-            Other Projects
-          </h3>
+          <div className='text-center'>
+            <h3 className='text-2xl font-bold text-foreground'>
+              Earlier Projects
+            </h3>
+            <p className='text-sm text-muted-foreground mt-2'>
+              Learning projects built while training at Masai School in
+              2021&ndash;22.
+            </p>
+          </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {otherProjects.map(project => (
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+            {earlierProjects.map(project => (
               <motion.div
                 key={project.id}
                 initial='hidden'
@@ -243,14 +146,14 @@ const Projects = () => {
                 viewport={{ once: true, amount: 0.2 }}
                 variants={gridCardVariants}
               >
-                <Card className='hover:shadow-lg transition-shadow'>
-                  <div className='relative h-48'>
+                <Card className='hover:shadow-lg transition-shadow h-full flex flex-col pt-0'>
+                  <div className='relative h-40'>
                     <Image
                       src={project.image}
                       alt={project.title}
                       fill
                       className='object-cover rounded-t-lg'
-                      sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                      sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                     />
                   </div>
 
@@ -258,7 +161,7 @@ const Projects = () => {
                     <CardTitle className='text-lg'>{project.title}</CardTitle>
                   </CardHeader>
 
-                  <CardContent className='space-y-4'>
+                  <CardContent className='space-y-4 flex flex-col flex-1'>
                     <p className='text-sm text-muted-foreground'>
                       {project.description}
                     </p>
@@ -281,33 +184,37 @@ const Projects = () => {
                       )}
                     </div>
 
-                    {/* Project Links */}
-                    <div className='flex gap-2'>
-                      <Button size='sm' asChild className='flex-1'>
-                        <Link
-                          href={project.liveUrl}
-                          target='_blank'
-                          rel='noopener noreferrer'
+                    {/* Project Links — only what actually exists */}
+                    <div className='flex gap-2 mt-auto'>
+                      {project.liveUrl && (
+                        <Button size='sm' asChild className='flex-1'>
+                          <Link
+                            href={project.liveUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            <ExternalLink className='h-3 w-3 mr-1' />
+                            Demo
+                          </Link>
+                        </Button>
+                      )}
+                      {project.githubUrl && (
+                        <Button
+                          size='sm'
+                          variant='outline'
+                          asChild
+                          className='flex-1'
                         >
-                          <ExternalLink className='h-3 w-3 mr-1' />
-                          Demo
-                        </Link>
-                      </Button>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        asChild
-                        className='flex-1'
-                      >
-                        <Link
-                          href={project.githubUrl}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                        >
-                          <Github className='h-3 w-3 mr-1' />
-                          Code
-                        </Link>
-                      </Button>
+                          <Link
+                            href={project.githubUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            <Github className='h-3 w-3 mr-1' />
+                            Code
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -320,7 +227,7 @@ const Projects = () => {
         <div className='text-center mt-12'>
           <Button variant='outline' size='lg' asChild>
             <Link
-              href='https://github.com/nag-murali?tab=repositories'
+              href={`${contact.github}?tab=repositories`}
               target='_blank'
               rel='noopener noreferrer'
             >

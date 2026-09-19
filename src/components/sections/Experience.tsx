@@ -1,49 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, MapPin, ExternalLink } from 'lucide-react';
+import {
+  CalendarDays,
+  MapPin,
+  ExternalLink,
+  GraduationCap,
+} from 'lucide-react';
 import Link from 'next/link';
 import * as motion from 'motion/react-client';
+import { experiences } from '@/data/experience';
+import { education } from '@/data/education';
+import { formatTenure } from '@/lib/utils';
 
 const Experience = () => {
-  const experiences = [
-    {
-      id: 1,
-      company: 'Gale Partners',
-      role: 'Frontend Developer',
-      location: 'Office',
-      type: 'Hybrid',
-      startDate: 'April 2022',
-      endDate: 'Present',
-      duration: '3+ years',
-      companyUrl: 'https://galepartners.com',
-      description:
-        'Developed scalable frontend solutions for multiple projects including Weave, Navigator, and BMO for Women, focusing on performance optimization and accessibility.',
-      achievements: [
-        'Weave (GALE CRM Automation Platform): Developed scalable frontend from scratch using React, Vite, Zustand, and Ant Design with integrated error tracking and performance optimization. Built reusable multi-step forms and dynamic dashboards with code splitting and lazy loading for optimal user experience',
-        'Navigator: Created reusable React components and infinite-scroll table for large datasets, built custom budget sliders with Facebook and TikTok integrations. Modernized Navigator stack with Next.js, Material-UI, and React Query, significantly improving application performance and maintainability',
-        'BMO for Women (Bank of Montreal Initiative): Developed accessible, reusable React components using Emotion with improved keyboard navigation and Jest testing. Optimized image handling using Next.js and enhanced UI development workflow using Storybook for component documentation. Maintained type safety and clean code architecture with TypeScript across all projects for scalable, maintainable solutions',
-        'Collaborated with cross-functional teams in Agile/Scrum environments and improved code quality with ESLint, Prettier, and Husky',
-        'Implemented state management using Redux, React Query, and Zustand across projects.',
-      ],
-      technologies: [
-        'React',
-        'Next.js',
-        'TypeScript',
-        'Vite',
-        'Zustand',
-        'Redux',
-        'React Query',
-        'Ant Design',
-        'Material-UI',
-        'Emotion',
-        'Jest',
-        'Storybook',
-      ],
-    },
-  ];
-
-  // Animation variants for achievements
-  const achievementListVariants = {
+  // Animation variants for case studies
+  const listVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -54,7 +25,7 @@ const Experience = () => {
     },
   };
 
-  const achievementItemVariants = {
+  const itemVariants = {
     hidden: {
       opacity: 0,
       x: -20,
@@ -87,28 +58,6 @@ const Experience = () => {
       y: 0,
       transition: {
         duration: 0.8,
-      },
-    },
-  };
-
-  const techBadgeVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.4,
-      },
-    },
-  };
-
-  const techListVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.3,
       },
     },
   };
@@ -156,7 +105,7 @@ const Experience = () => {
                             {exp.role}
                           </CardTitle>
                           <Badge variant='outline' className='text-xs shrink-0'>
-                            {exp.duration}
+                            {formatTenure(exp.startDate)}
                           </Badge>
                         </div>
                         <div className='flex items-center gap-2'>
@@ -178,7 +127,7 @@ const Experience = () => {
                           <div className='flex items-center gap-1'>
                             <CalendarDays className='h-3 w-3' />
                             <span>
-                              {exp.startDate} - {exp.endDate}
+                              {exp.startLabel} - {exp.endLabel}
                             </span>
                           </div>
                           <Badge
@@ -191,64 +140,60 @@ const Experience = () => {
                       </div>
                     </CardHeader>
 
-                    <CardContent className='space-y-4 pt-0'>
+                    <CardContent className='space-y-6 pt-0'>
                       <p className='text-base font-medium leading-relaxed text-foreground'>
                         {exp.description}
                       </p>
-
-                      {/* Key Achievements */}
-                      <div>
-                        <h4 className='font-semibold text-foreground mb-2 text-sm'>
-                          Key Achievements
-                        </h4>
-                        <motion.ul
-                          className='space-y-1'
-                          initial='hidden'
-                          whileInView='visible'
-                          viewport={{ once: true, amount: 0.2, margin: '50px' }}
-                          variants={achievementListVariants}
+                      <p className='text-sm text-muted-foreground'>
+                        Four platforms, detailed in{' '}
+                        <Link
+                          href='#projects'
+                          className='text-primary hover:underline'
                         >
-                          {exp.achievements.map((achievement, idx) => (
-                            <motion.li
-                              key={idx}
-                              className='flex items-start gap-2 text-muted-foreground text-sm'
-                              variants={achievementItemVariants}
-                            >
-                              <span className='text-primary mt-1 text-xs'>
-                                •
-                              </span>
-                              <span className='leading-relaxed'>
-                                {achievement}
-                              </span>
-                            </motion.li>
-                          ))}
-                        </motion.ul>
-                      </div>
+                          Selected Work
+                        </Link>
+                        .
+                      </p>
 
-                      {/* Technologies */}
-                      <div>
-                        <h4 className='font-semibold text-foreground mb-2 text-sm'>
-                          Technologies
-                        </h4>
-                        <motion.div
-                          className='flex flex-wrap gap-1'
-                          variants={techListVariants}
-                          initial='hidden'
-                          whileInView='visible'
-                          viewport={{ once: true }}
-                        >
-                          {exp.technologies.map(tech => (
-                            <motion.div key={tech} variants={techBadgeVariants}>
-                              <Badge
-                                variant='secondary'
-                                className='text-xs px-2 py-0'
-                              >
-                                {tech}
-                              </Badge>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      </div>
+                      {/* Case Studies */}
+                      <motion.div
+                        className='space-y-5'
+                        initial='hidden'
+                        whileInView='visible'
+                        viewport={{ once: true, amount: 0.1, margin: '50px' }}
+                        variants={listVariants}
+                      >
+                        {exp.caseStudies.map(study => (
+                          <motion.div
+                            key={study.id}
+                            variants={itemVariants}
+                            className='border-l-2 border-primary/30 pl-4'
+                          >
+                            <div className='flex flex-wrap items-baseline gap-x-2'>
+                              <h4 className='font-semibold text-foreground'>
+                                {study.name}
+                              </h4>
+                              <span className='text-xs text-muted-foreground'>
+                                {study.subtitle}
+                              </span>
+                            </div>
+                            <p className='text-sm text-primary mt-1 mb-2'>
+                              {study.outcome}
+                            </p>
+                            <div className='flex flex-wrap gap-1'>
+                              {study.technologies.map(tech => (
+                                <Badge
+                                  key={tech}
+                                  variant='secondary'
+                                  className='text-xs px-2 py-0'
+                                >
+                                  {tech}
+                                </Badge>
+                              ))}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </motion.div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -258,74 +203,52 @@ const Experience = () => {
         </div>
 
         {/* Education */}
-        {/* <div>
+        <div>
           <div className='flex justify-center'>
             <div className='w-full max-w-4xl'>
-              {education.map((edu, index) => (
-                <Card
-                  key={index}
-                  className='hover:shadow-lg transition-shadow h-full'
-                >
+              <motion.div
+                initial='hidden'
+                whileInView='visible'
+                viewport={{ once: true, amount: 0.1, margin: '100px' }}
+                variants={cardVariants}
+              >
+                <Card className='hover:shadow-lg transition-shadow h-full'>
                   <CardHeader className='pb-4 border-b'>
-                    <CardTitle className='text-2xl font-bold text-foreground mb-4'>
+                    <CardTitle className='text-2xl font-bold text-foreground'>
                       Education
                     </CardTitle>
-                    <div className='space-y-2'>
-                      <div className='flex items-start justify-between gap-2'>
-                        <CardTitle className='text-lg leading-tight'>
-                          {edu.degree}
-                        </CardTitle>
-                        <Badge variant='outline' className='text-xs shrink-0'>
-                          GPA: {edu.gpa}
-                        </Badge>
-                      </div>
-                      <p className='text-primary font-medium text-sm'>
-                        {edu.institution}
-                      </p>
-                      <div className='flex flex-wrap items-center gap-3 text-xs text-muted-foreground'>
-                        <div className='flex items-center gap-1'>
-                          <MapPin className='h-3 w-3' />
-                          <span>{edu.location}</span>
-                        </div>
-                        <div className='flex items-center gap-1'>
-                          <CalendarDays className='h-3 w-3' />
-                          <span>
-                            {edu.startDate} - {edu.endDate}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
                   </CardHeader>
 
-                  <CardContent className='space-y-4 pt-0'>
-                    <p className='text-muted-foreground text-sm leading-relaxed'>
-                      {edu.description}
-                    </p>
-
-                    <div>
-                      <h4 className='font-semibold text-foreground mb-2 text-sm'>
-                        Achievements
-                      </h4>
-                      <ul className='space-y-1'>
-                        {edu.achievements.map((achievement, idx) => (
-                          <li
-                            key={idx}
-                            className='flex items-start gap-2 text-muted-foreground text-sm'
-                          >
-                            <span className='text-primary mt-1 text-xs'>•</span>
-                            <span className='leading-relaxed'>
-                              {achievement}
+                  <CardContent className='space-y-5 pt-0'>
+                    {education.map(edu => (
+                      <div key={edu.degree} className='flex items-start gap-3'>
+                        <GraduationCap className='h-4 w-4 text-primary mt-1 shrink-0' />
+                        <div className='space-y-1'>
+                          <div className='flex flex-wrap items-baseline gap-x-2'>
+                            <h4 className='font-semibold text-foreground text-sm'>
+                              {edu.degree}
+                            </h4>
+                            <span className='text-xs text-muted-foreground'>
+                              {edu.period}
                             </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                          </div>
+                          <p className='text-primary font-medium text-sm'>
+                            {edu.institution}
+                          </p>
+                          {edu.honours && (
+                            <p className='text-xs text-muted-foreground'>
+                              {edu.honours}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </CardContent>
                 </Card>
-              ))}
+              </motion.div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </section>
   );
